@@ -160,14 +160,14 @@ export function normalizeToolchainDir(dirPath: string, dirName: string): void {
 /**
  * Download AOSP Clang
  */
-async function downloadAospClang(version: string, androidVersion: string): Promise<string> {
+async function downloadAospClang(): Promise<string> {
   core.startGroup('Downloading AOSP Clang');
 
   const clangDir = path.join(HOME, TOOLCHAIN_DIRS.clang);
 
   let url: string;
   
-  core.startGroup('Downloading ravindu644 Clang ${string} ${androidVersion}');
+  core.startGroup('Downloading ravindu644 Clang');
 
   url= `https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/clang-r416183b.tar.gz`;
 
