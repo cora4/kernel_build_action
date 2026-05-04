@@ -166,13 +166,10 @@ async function downloadAospClang(version: string, androidVersion: string): Promi
   const clangDir = path.join(HOME, TOOLCHAIN_DIRS.clang);
 
   let url: string;
-  url= `https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/clang-r416183b.tar.gz`;
   
-  // if (androidVersion) {
-    // url = `https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android${androidVersion}-release/clang-${version}.tar.gz`;
-  // } else {
-    // url = `https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/mirror-goog-main-llvm-toolchain-source/clang-${version}.tar.gz`;
-  // }
+  core.startGroup('Downloading ravindu644 Clang');
+
+  url= `https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/clang-r416183b.tar.gz`;
 
   await downloadAndExtract(url, 'aosp-clang', clangDir);
 
