@@ -24,5 +24,6 @@ jobs:
           aosp-clang: true
           android-version: 11
           aosp-clang-version: r416183b
+          ccache: true
           disable-lto: false
           anykernel3: false
