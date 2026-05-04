@@ -11,8 +11,8 @@ jobs:
     permissions:
       contents: read
     steps:
-    - name: Install libc6-dev-i386
-      run: sudo apt install libc6-dev-i386
+      - name: Install libc6-dev-i386 lib32gcc-10-dev
+        run: sudo apt install libc6-dev-i386 lib32gcc-10-dev
       - name: Build Kernel
         uses: cora4/kernel_build_action@main
         with:
