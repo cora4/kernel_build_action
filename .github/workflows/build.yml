@@ -17,13 +17,13 @@ jobs:
         with:
           kernel-url: https://github.com/cora4/kernel_red
           kernel-dir: msm-5.4
-          kernel-branch: 11
+          kernel-branch: 12
           config: gki_defconfig
           arch: arm64
           aosp-gcc: true
           aosp-clang: true
+          anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b
           ccache: true
           disable-lto: false
-          anykernel3: false
