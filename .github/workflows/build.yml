@@ -1,4 +1,4 @@
-# A simple action usage
+v# A simple action usage
 name: Build Kernel
 on:
   workflow_dispatch:
@@ -37,7 +37,17 @@ jobs:
           extra-make-args: '[
             "LOCALVERSION= (CI)",
             "LLVM=1",
-            "LLVM_IAS=1"
+            "LD=ld.lld",
+            "AR=llvm-ar",
+            "NM=llvm-nm",
+            "STRIP=llvm-strip",
+            "OBJCOPY=llvm-objcopy",
+            "OBJDUMP=llvm-objdump",
+            "READELF=llvm-readelf",
+            "HOSTCC=clang",
+            "HOSTCXX=clang++",
+            "HOSTAR=llvm-ar",
+            "HOSTLD=ld.lld",
            ]'
       - name: Upload Build Artifact
         if: ${{ always() && steps.gmake_build.outcome == 'success' }}
