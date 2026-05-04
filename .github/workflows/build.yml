@@ -21,9 +21,10 @@ jobs:
           config: gki_defconfig
           arch: arm64
           aosp-gcc: true
-          aosp-clang: true
+          aosp-clang: false
+          other-clang-url: https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/clang-r416183b.tar.gz
           anykernel3: true
-          android-version: 11
-          aosp-clang-version: r416183b
+          android-version: 12
+          aosp-clang-version: r416183b1
           ccache: true
           disable-lto: false
