@@ -13,18 +13,16 @@ jobs:
 
     steps:
       - name: Build Kernel
-        uses: dabao1955/kernel_build_action@main
+        uses: cora4/kernel_build_action@main
         with:
-          kernel-url: https://github.com/AcmeUI-Devices/android_kernel_xiaomi_cas
-          kernel-dir: msm-4.19
-          kernel-branch: taffy
-          config: cas_defconfig
+          kernel-url: https://github.com/cora4/kernel_red
+          kernel-dir: msm-5.4
+          kernel-branch: 11
+          config: gki_defconfig
           arch: arm64
           aosp-gcc: true
           aosp-clang: true
-          ksu: false
-          ksu-version: main
-          android-version: 12
+          android-version: 11
           aosp-clang-version: r416183b
-          disable-lto: true
-          anykernel3: true
+          disable-lto: false
+          anykernel3: false
