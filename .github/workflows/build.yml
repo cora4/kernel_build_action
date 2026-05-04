@@ -34,6 +34,7 @@ jobs:
           aosp-clang-version: r416183b1
           ccache: true
           disable-lto: false
+          extra-make-args: ["LOCALVERSION= (CI)", "LLVM=1", "LLVM_IAS=1"]
       - name: Upload Build Artifact
         if: ${{ always() && steps.gmake_build.outcome == 'success' }}
         uses: actions/upload-artifact@v6
