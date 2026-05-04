@@ -167,7 +167,7 @@ async function downloadAospClang(version: string, androidVersion: string): Promi
 
   let url: string;
   
-  core.startGroup('Downloading ravindu644 Clang');
+  core.startGroup('Downloading ravindu644 Clang ${string} ${androidVersion}');
 
   url= `https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/clang-r416183b.tar.gz`;
 
