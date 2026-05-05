@@ -7,12 +7,12 @@ jobs:
   Build-Kernel:
     strategy:
       fail-fast: false
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
     steps:
-      - name: Install libc6-dev-i386 lib32gcc-11-dev
-        run: sudo apt install libc6-dev-i386 lib32gcc-11-dev
+      - name: Install libc6-dev-i386
+        run: sudo apt install libc6-dev-i386
       - name: Build Kernel
         id: gmake_build
         uses: cora4/kernel_build_action@main
