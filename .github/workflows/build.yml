@@ -24,18 +24,13 @@ jobs:
           arch: arm64
           aosp-gcc: false
           aosp-clang: false
-          other-clang-url: https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/clang-r416183b.tar.gz
-          other-gcc32-branch: main
-          other-gcc64-branch: main
-          other-gcc32-url: https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz
-          other-gcc64-url: https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+          other-clang-url: https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/clang-r450784e.tar.gz
           anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b1
           ccache: true
           disable-lto: false
           extra-make-args: '[
-            "LOCALVERSION=(CI)",
             "LLVM=1",
             "LLVM_IAS=1"
            ]'
@@ -45,4 +40,3 @@ jobs:
         with:
           name: gki-kernel
           path: kernel/msm-5.4/out/arch/arm64/boot
-          
