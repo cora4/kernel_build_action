@@ -26,8 +26,8 @@ jobs:
           arch: arm64
           aosp-gcc: false
           aosp-clang: false
-          other-clang-url: /home/runner/work/kernel_build_action/kernel_build_action/clang/
-          other-gcc64-url: /home/runner/work/kernel_build_action/kernel_build_action/gcc-4.9/
+          other-clang-url: ./clang/
+          other-gcc64-url: ./gcc-4.9/
           anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b1
