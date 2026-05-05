@@ -15,8 +15,14 @@ jobs:
         run: echo $PWD; mkdir ./clang-4.9;ls -dl clang-4.9;wget -q https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v15/clang-r416183b.tar.xz;tar xJf clang-r416183b.tar.xz -C ./clang-4.9;touch ./clang-4.9/not-linux-tool; rm clang-r416183b.tar.xz
       - name: Get gcc
         run: mkdir ./gcc-4.9;wget -q https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v6/google_gcc-4.9-main-20240120.tar.xz;tar xJf google_gcc-4.9-main-20240120.tar.xz -C ./gcc-4.9/;rm google_gcc-4.9-main-20240120.tar.xz
+      - name: Get gcc-32
+        run: mkdir ./gcc-4.9-32;wget -q https://github.com/cora4/kernel_red/releases/download/gcc-arm/arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-linux-gnueabihf.tar.xz;tar xJf arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-linux-gnueabihf.tar.xz -C ./gcc-4.9-32/;rm arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-linux-gnueabihf.tar.xz
       - name: Setup gcc
         run: cd ./gcc-4.9;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
+      
+      - name: Setup gcc
+        run: cd ./gcc-4.9-32;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
+
       - name: Setup clang
         run: cd ./clang-4.9;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
       - name: Build Kernel
@@ -30,9 +36,9 @@ jobs:
           arch: arm64
           aosp-gcc: false
           aosp-clang: false
-          other-clang-url: ./clang-4.9
+          other-clang-url: ./clang-4.9/
           other-gcc64-url: ./gcc-4.9/
-          other-gcc32-url: https://github.com/cora4/kernel_red/releases/download/gcc-arm/arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-linux-gnueabihf.tar.xz
+          other-gcc32-url: ./gcc-4.9-32/
           anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b1
