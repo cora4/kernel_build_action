@@ -37,7 +37,7 @@ jobs:
           extra-make-args: '[
             "LOCALVERSION=(CI)",
             "LLVM=1",
-            "LLVM_IAS=0"
+            "LLVM_IAS=1"
            ]'
       - name: Upload Build Artifact
         if: ${{ always() && steps.gmake_build.outcome == 'success' }}
