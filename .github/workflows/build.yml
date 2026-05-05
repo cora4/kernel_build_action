@@ -24,7 +24,7 @@ jobs:
           arch: arm64
           aosp-gcc: false
           aosp-clang: false
-          other-clang-url: https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v15/clang-r416183b.tar.xz
+          other-clang-url: https://github.com/cora4/kernel_red/releases/download/clang/clang-r416183b1.tar.gz
           anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b1
