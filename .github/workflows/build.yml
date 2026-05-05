@@ -32,6 +32,7 @@ jobs:
           aosp-clang: false
           other-clang-url: ./clang-4.9
           other-gcc64-url: ./gcc-4.9/
+          other-gcc32-url: https://github.com/cora4/kernel_red/releases/download/gcc-arm/arm-gnu-toolchain-11.3.rel1-aarch64-arm-none-linux-gnueabihf.tar.xz
           anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b1
