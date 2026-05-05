@@ -15,6 +15,10 @@ jobs:
         run: echo $PWD; mkdir ./clang-4.9;ls -dl clang-4.9;wget -q https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v15/clang-r416183b.tar.xz;tar xJf clang-r416183b.tar.xz -C ./clang-4.9;touch ./clang-4.9/not-linux-tool; rm clang-r416183b.tar.xz
       - name: Get gcc
         run: mkdir ./gcc-4.9;wget -q https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v6/google_gcc-4.9-main-20240120.tar.xz;tar xJf google_gcc-4.9-main-20240120.tar.xz -C ./gcc-4.9/;rm google_gcc-4.9-main-20240120.tar.xz
+      - name: Setup gcc
+        run: cd ./gcc-4.9;git init; git add .;git commit -m "init"
+      - name: Setup clang
+        run: cd ./clang-4.9;git init; git add .;git commit -m "init"
       - name: Build Kernel
         id: gmake_build
         uses: cora4/kernel_build_action@main
