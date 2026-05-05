@@ -12,9 +12,9 @@ jobs:
       contents: read
     steps:
       - name: Get clang
-        run: wget https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v15/clang-r416183b.tar.xz; mkdir clang; xz -dc clang-r416183b.tar.xz|tar xf -C clang/; touch clang/not-linux-tool; rm clang-r416183b.tar.xz
+        run: echo $PWD; mkdir $PWD/clang; wget https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v15/clang-r416183b.tar.xz; xz -dc clang-r416183b.tar.xz|tar xf -C $PWD/clang/; touch $PWD/clang/not-linux-tool; rm clang-r416183b.tar.xz
       - name: Get gcc
-        run: wget https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v6/google_gcc-4.9-main-20240120.tar.xz; mkdir gcc-4.9; xz -dc google_gcc-4.9-main-20240120.tar.xz|tar xf google_gcc-4.9-main-20240120.tar -C gcc-4.9/; rm google_gcc-4.9-main-20240120.tar.xz
+        run: mkdir $PWD/gcc-4.9; wget https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v6/google_gcc-4.9-main-20240120.tar.xz; xz -dc google_gcc-4.9-main-20240120.tar.xz|tar xf google_gcc-4.9-main-20240120.tar -C $PWD/gcc-4.9/; rm google_gcc-4.9-main-20240120.tar.xz
       - name: Build Kernel
         id: gmake_build
         uses: cora4/kernel_build_action@main
@@ -26,8 +26,8 @@ jobs:
           arch: arm64
           aosp-gcc: false
           aosp-clang: false
-          other-clang-url: ./clang/
-          other-gcc64-url: ./gcc-4.9/
+          other-clang-url: $PWD/clang/
+          other-gcc64-url: $PWD/gcc-4.9/
           anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b1
