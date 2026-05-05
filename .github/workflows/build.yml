@@ -35,19 +35,9 @@ jobs:
           ccache: true
           disable-lto: false
           extra-make-args: '[
-            "LOCALVERSION= (CI)",
+            "LOCALVERSION=(CI)",
             "LLVM=1",
-            "LD=ld.lld",
-            "AR=llvm-ar",
-            "NM=llvm-nm",
-            "STRIP=llvm-strip",
-            "OBJCOPY=llvm-objcopy",
-            "OBJDUMP=llvm-objdump",
-            "READELF=llvm-readelf",
-            "HOSTCC=clang",
-            "HOSTCXX=clang++",
-            "HOSTAR=llvm-ar",
-            "HOSTLD=ld.lld"
+            "LLVM_IAS=0"
            ]'
       - name: Upload Build Artifact
         if: ${{ always() && steps.gmake_build.outcome == 'success' }}
