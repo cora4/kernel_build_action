@@ -11,8 +11,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Add to PATH
-        run: echo "./clang-4.9/clang-r416183/bin/" >> $GITHUB_PATH
       - name: Get clang
         run: echo $PWD; mkdir ./clang-4.9;ls -dl clang-4.9;wget -q https://github.com/tomxi1997/build-aosp-clang-for-arm64/releases/download/v11/clang-r4161831.tar.xz;tar xJf clang-r4161831.tar.xz -C ./clang-4.9/;find ./clang-4.9/;touch ./clang-4.9/not-linux-tool; rm clang-r4161831.tar.xz
       - name: Get gcc
