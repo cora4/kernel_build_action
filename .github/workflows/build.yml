@@ -16,9 +16,9 @@ jobs:
       - name: Get gcc
         run: mkdir ./gcc-4.9;wget -q https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v6/google_gcc-4.9-main-20240120.tar.xz;tar xJf google_gcc-4.9-main-20240120.tar.xz -C ./gcc-4.9/;rm google_gcc-4.9-main-20240120.tar.xz
       - name: Setup gcc
-        run: cd ./gcc-4.9;git init; git add .;git commit -m "init"
+        run: cd ./gcc-4.9;git init; git add .;git commit -m "init" --author="tmp <tmp@example.com>"
       - name: Setup clang
-        run: cd ./clang-4.9;git init; git add .;git commit -m "init"
+        run: cd ./clang-4.9;git init; git add .;git commit -m "init" --author="tmp <tmp@example.com>"
       - name: Build Kernel
         id: gmake_build
         uses: cora4/kernel_build_action@main
