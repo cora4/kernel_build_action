@@ -7,35 +7,24 @@ jobs:
   Build-Kernel:
     strategy:
       fail-fast: false
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
     steps:
-      - name: Get clang
-        run: echo $PWD; mkdir ./clang-4.9;ls -dl clang-4.9;wget -q https://github.com/tomxi1997/build-aosp-clang-for-arm64/releases/download/v11/clang-r4161831.tar.xz;tar xJf clang-r4161831.tar.xz -C ./clang-4.9/;find ./clang-4.9/;touch ./clang-4.9/not-linux-tool; rm clang-r4161831.tar.xz
-      - name: Get gcc
-        run: mkdir ./gcc-4.9;wget -q https://github.com/tomxi1997/Toolchain-for-aarch64-hosts/releases/download/v6/google_gcc-4.9-main-20240120.tar.xz;tar xJf google_gcc-4.9-main-20240120.tar.xz -C ./gcc-4.9/;rm google_gcc-4.9-main-20240120.tar.xz
-      - name: Setup gcc
-        run: cd ./gcc-4.9/google_gcc-4.9-main/aarch64;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
-      - name: Setup gcc-32
-        run: cd ./gcc-4.9/google_gcc-4.9-main/arm;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
-
-      - name: Setup clang
-        run: cd ./clang-4.9/;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
+      - name: Install libc6-dev-i386
+        run: sudo apt install libc6-dev-i386
       - name: Build Kernel
         id: gmake_build
         uses: cora4/kernel_build_action@main
         with:
-          kernel-url: https://github.com/cora4/kernel_red
+          kernel-url: https://github.com/cora4/kernel_sm6375
           kernel-dir: msm-5.4
-          kernel-branch: 11
-          config: gki_defconfig
+          kernel-branch: 6f
+          config: gemstone_defconfig
           arch: arm64
           aosp-gcc: false
           aosp-clang: false
-          other-clang-url: ./clang-4.9/
-          other-gcc64-url: ./gcc-4.9/google_gcc-4.9-main/aarch64
-          other-gcc32-url: ./gcc-4.9/google_gcc-4.9-main/arm
+          other-clang-url: https://github.com/cora4/kernel_red/releases/download/clang/clang-r416183b1.tar.gz
           anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b1
