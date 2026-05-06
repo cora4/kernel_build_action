@@ -1,15 +1,16 @@
 # A simple action usage
 name: Make Release
 on:
-  workflow_dispatch:
-
+  push:
+    branches:
+      - main
 jobs:
   Build-Kernel:
     strategy:
       fail-fast: false
     runs-on: ubuntu-22.04
     permissions:
-      contents: read
+      contents: write
     steps:
       - name: Create Release
         id: create_release
