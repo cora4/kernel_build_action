@@ -1,37 +1,30 @@
-# A simple action usage
-name: Make Release
+name: Build and Release
+
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'   # triggers on tags like v1.0.0
+
+permissions:
+  contents: write
+
 jobs:
-  Build-Kernel:
-    strategy:
-      fail-fast: false
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: write
+  build-and-release:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Build artifact
         run: |
-          mkdir dist
+          mkdir -p dist
           echo "hello world" > dist/output.txt
-      - name: Upload asset
-        uses: actions/upload-release-asset@v1
+
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          files: dist/output.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/output.txt
-          asset_name: output.txt
-          asset_content_type: text/plain
