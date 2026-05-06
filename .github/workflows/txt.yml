@@ -28,9 +28,13 @@ jobs:
           mkdir -p dist
           echo "hello world" > dist/output.txt
 
+
       - name: Create Release
         run: |
-          gh release create ${{ github.ref_name }} dist/output.txt \
-            --title "Release ${{ github.ref_name }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG=main-${{ github.run_number }}
+          git tag $TAG
+          git push origin $TAG
+          gh release create $TAG dist/output.txt \
+          --title "Release $TAG"
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
