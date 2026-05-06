@@ -19,7 +19,7 @@ jobs:
       - name: Build artifact
         run: |
           mkdir -p dist
-          echo "hello world" > dist/output2.txt
+          echo "hello world" > dist/output.txt
 
       - name: Create Release
         run: |
