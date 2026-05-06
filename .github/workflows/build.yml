@@ -20,7 +20,7 @@ jobs:
         run: cd ./gcc-4.9-64/;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
       
       - name: Get gcc-32
-        run: mkdir ./gcc-4.9;wget -q https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz;tar xJf arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnu.tar.xz -C ./gcc-4.9/;rm arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnu.tar.xz      
+        run: mkdir ./gcc-4.9;wget -q https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz;tar xJf arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz -C ./gcc-4.9/;rm arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnu.tar.xz      
       - name: Setup gcc-32
         run: cd ./gcc-4.9/;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
 
