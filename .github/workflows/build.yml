@@ -11,6 +11,21 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Get clang
+        run: echo $PWD; mkdir ./clang-4.9;ls -dl clang-4.9;wget -q https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/clang-r450784e.tar.gz;tar xzf clang-r450784e.tar.gz -C ./clang-4.9/;find ./clang-4.9/;touch ./clang-4.9/not-linux-tool; rm clang-r450784e.tar.gz
+      
+      - name: Get gcc-64
+        run: mkdir ./gcc-4.9-64;wget -q https://github.com/ravindu644/Android-Kernel-Tutorials/releases/download/toolchains/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz;tar xJf arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz -C ./gcc-4.9-64/;rm arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+      - name: Setup gcc-64
+        run: cd ./gcc-4.9-64/;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
+      
+      - name: Get gcc-32
+        run: mkdir ./gcc-4.9;wget -q https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz;tar xJf arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnu.tar.xz -C ./gcc-4.9/;rm arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-linux-gnu.tar.xz      
+      - name: Setup gcc-32
+        run: cd ./gcc-4.9/;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
+
+      - name: Setup clang
+        run: cd ./clang-4.9/;git init --initial-branch=main; git add .;git config user.name "runner";git config user.email "runner@example.com";git commit -m "init"
       - name: Install libc6-dev-i386
         run: sudo apt install libc6-dev-i386
       - name: Build Kernel
@@ -24,7 +39,9 @@ jobs:
           arch: arm64
           aosp-gcc: false
           aosp-clang: false
-          other-clang-url: https://github.com/cora4/kernel_red/releases/download/clang/clang-r416183b1.tar.gz
+          other-clang-url: ./clang-4.9/
+          other-gcc64-url: ./gcc-4.9-64/
+          other-gcc32-url: ./gcc-4.9/
           anykernel3: true
           android-version: 12
           aosp-clang-version: r416183b1
