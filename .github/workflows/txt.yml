@@ -19,14 +19,14 @@ jobs:
       - name: Build artifact
         run: |
           mkdir -p dist
-          echo "hello world" > dist/output.txt
+          wget https://github.com/cora4/models-playground/actions/runs/26847789336/artifacts/7369728547
 
       - name: Create Release
         run: |
           TAG=main-${{ github.run_number }}-$RANDOM
           git tag $TAG
           git push origin $TAG
-          gh release create $TAG dist/output.txt \
+          gh release create $TAG oneapi.zip \
             --title "Release $TAG"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
