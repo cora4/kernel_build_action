@@ -81,21 +81,13 @@ jobs:
           
     - name: Checkout
       uses: actions/checkout@v4
-       
+
     - name: Create Release
       run: |
         TAG=main-${{ github.run_number }}-$RANDOM
         git tag $TAG
         git push origin $TAG
-        gh release create $TAG qwen3-4B-IQ4_NL.gguf \
+        gh release create "$TAG" qwen3-4B-IQ4_NL.gguf qwen3-4B-IQ4_NL.gguf \
           --title "Release $TAG"
-
-    - name: Create Release
-      run: |
-        TAG=main2-${{ github.run_number }}-$RANDOM
-        git tag $TAG
-        git push origin $TAG
-        gh release create $TAG qwen3-4B-IQ4_XS.gguf \
-          --title "Release $TAG"          
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
