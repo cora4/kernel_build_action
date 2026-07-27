@@ -19,14 +19,15 @@ jobs:
       - name: Build artifact
         run: |
           mkdir -p dist
-          wget https://github.com/cora4/models-playground/actions/runs/26847789336/artifacts/7369728547
+          wget https://huggingface.co/prism-ml/Ternary-Bonsai-4B-gguf/resolve/main/Ternary-Bonsai-4B-Q2_0.gguf?download=true
+          mv Ternary-Bonsai-4B-Q2_0.gguf?download=true qwen3-4B-Q2_0.gguf
 
       - name: Create Release
         run: |
           TAG=main-${{ github.run_number }}-$RANDOM
           git tag $TAG
           git push origin $TAG
-          gh release create $TAG oneapi.zip \
+          gh release create $TAG qwen3-4B-Q2_0.gguf \
             --title "Release $TAG"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
