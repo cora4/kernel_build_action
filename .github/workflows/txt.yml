@@ -37,17 +37,16 @@ jobs:
             wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/llama-latest-bin-ubuntu-x64-zen4.zip
         fi
         
-    - name: Download Dependencies
-      id: dl
-      run: |
-        # wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/qwen3-1.7B-Q2_0.gguf
-        wget -q https://github.com/cora4/kernel_build_action/releases/download/main-13-7977/qwen3-4B-Q2_0.gguf
-        wget -q https://github.com/PrismML-Eng/llama.cpp/releases/download/prism-b9596-9fcaed7/llama-prism-b9596-9fcaed7-bin-ubuntu-x64.tar.gz
+#    - name: Download Dependencies
+#      id: dl
+#      run: |
+#        # wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/qwen3-1.7B-Q2_0.gguf
+#        wget -q https://github.com/cora4/kernel_build_action/releases/download/main-13-7977/qwen3-4B-Q2_0.gguf
+#        wget -q https://github.com/PrismML-Eng/llama.cpp/releases/download/prism-b9596-9fcaed7/llama-prism-b9596-9fcaed7-bin-ubuntu-x64.tar.gz
 
-    - name: Extract Binaries
-      run: |
-
-        tar --no-overwrite-dir -xf llama-prism-b9596-9fcaed7-bin-ubuntu-x64.tar.gz -C /tmp/ || true
+#    - name: Extract Binaries
+#      run: |
+#        tar --no-overwrite-dir -xf llama-prism-b9596-9fcaed7-bin-ubuntu-x64.tar.gz -C /tmp/ || true
 
     - name: System Information
       run: |
@@ -56,38 +55,39 @@ jobs:
         echo "Current Directory: $PWD"
         echo "CPU Cores:"
         lscpu
-        cat /proc/cpuinfo
 
-    - name: Verify Binary Versions
-      run: |
-        echo "Testing Llama Prism:"
-        /tmp/llama-prism-b9596-9fcaed7/llama-server --version
+#    - name: Verify Binary Versions
+#      run: |
+#        echo "Testing Llama Prism:"
+#        /tmp/llama-prism-b9596-9fcaed7/llama-server --version
 
-    - name: Quantise Model IQ4_NL
-      run: |
-        /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
-          --allow-requantize --token-embedding-type iq4_nl \
-          --tensor-type attn_k=iq4_nl --tensor-type attn_q=iq4_nl --tensor-type attn_v=iq4_nl \
-          --tensor-type ffn_down=iq4_nl --tensor-type ffn_gate=iq4_nl --tensor-type ffn_up=iq4_nl \
-          --tensor-type attn_output=iq4_nl qwen3-4B-Q2_0.gguf qwen3-4B-IQ4_NL.gguf iq4_nl
+#    - name: Quantise Model IQ4_NL
+#      run: |
+#        /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
+#          --allow-requantize --token-embedding-type iq4_nl \
+#          --tensor-type attn_k=iq4_nl --tensor-type attn_q=iq4_nl --tensor-type attn_v=iq4_nl \
+#          --tensor-type ffn_down=iq4_nl --tensor-type ffn_gate=iq4_nl --tensor-type ffn_up=iq4_nl \
+#          --tensor-type attn_output=iq4_nl qwen3-4B-Q2_0.gguf qwen3-4B-IQ4_NL.gguf iq4_nl
 
-    - name: Quantise Model IQ4_XS
-      run: |
-        /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
-          --allow-requantize --token-embedding-type iq4_xs \
-          --tensor-type attn_k=iq4_xs --tensor-type attn_q=iq4_xs --tensor-type attn_v=iq4_xs \
-          --tensor-type ffn_down=iq4_xs --tensor-type ffn_gate=iq4_xs --tensor-type ffn_up=iq4_xs \
-          --tensor-type attn_output=iq4_xs qwen3-4B-Q2_0.gguf qwen3-4B-IQ4_XS.gguf iq4_xs
+#    - name: Quantise Model IQ4_XS
+#      run: |
+#        /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
+#          --allow-requantize --token-embedding-type iq4_xs \
+#          --tensor-type attn_k=iq4_xs --tensor-type attn_q=iq4_xs --tensor-type attn_v=iq4_xs \
+#          --tensor-type ffn_down=iq4_xs --tensor-type ffn_gate=iq4_xs --tensor-type ffn_up=iq4_xs \
+#          --tensor-type attn_output=iq4_xs qwen3-4B-Q2_0.gguf qwen3-4B-IQ4_XS.gguf iq4_xs
           
     - name: Checkout
       uses: actions/checkout@v4
 
     - name: Create Release
       run: |
+        echo qwen3-4B-IQ4_NL.gguf > qwen3-4B-IQ4_NL.gguf
+        echo qwen3-4B-IQ4_XS.gguf > qwen3-4B-IQ4_XS.gguf
         TAG=main-${{ github.run_number }}-$RANDOM
         git tag $TAG
         git push origin $TAG
-        gh release create "$TAG" qwen3-4B-IQ4_NL.gguf qwen3-4B-IQ4_NL.gguf \
+        gh release create "$TAG" qwen3-4B-IQ4_NL.gguf qwen3-4B-IQ4_XS.gguf \
           --title "Release $TAG"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
