@@ -83,7 +83,7 @@ jobs:
           --allow-requantize --token-embedding-type mxfp4 \
           --tensor-type attn_k=mxfp4 --tensor-type attn_q=mxfp4 --tensor-type attn_v=mxfp4 \
           --tensor-type ffn_down=mxfp4 --tensor-type ffn_gate=mxfp4 --tensor-type ffn_up=mxfp4 \
-          --tensor-type attn_output=mxfp4 qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-MXFP4.gguf 38          
+          --tensor-type attn_output=mxfp4 qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-MXFP4.gguf 38          
           
     - name: Checkout
       uses: actions/checkout@v4
