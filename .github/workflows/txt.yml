@@ -15,7 +15,7 @@ jobs:
       run: |
         if ! grep -q "avx512_vnni" /proc/cpuinfo; then
             echo "Architecture: AVX2 (haswell/zen3)"
-            exit 1
+            # exit 1
             wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/llama-latest-bin-ubuntu-x64-avx2.zip
         elif grep -q "Intel" /proc/cpuinfo; then
             if grep -q "avx512_bf16" /proc/cpuinfo; then
@@ -28,7 +28,7 @@ jobs:
                 wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/llama-latest-bin-ubuntu-x64-sr.zip
             else
                 echo "Architecture: Ice Lake"
-                exit 1
+                # exit 1
                 wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/llama-latest-bin-ubuntu-x64-icl.zip
             fi
         else
@@ -69,13 +69,21 @@ jobs:
 #          --tensor-type ffn_down=iq4_nl --tensor-type ffn_gate=iq4_nl --tensor-type ffn_up=iq4_nl \
 #          --tensor-type attn_output=iq4_nl qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-IQ4_NL.gguf iq4_nl
 
-    - name: Quantise Model IQ4_XS
+#    - name: Quantise Model IQ4_XS
+#      run: |
+#        /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
+#          --allow-requantize --token-embedding-type iq4_xs \
+#          --tensor-type attn_k=iq4_xs --tensor-type attn_q=iq4_xs --tensor-type attn_v=iq4_xs \
+#          --tensor-type ffn_down=iq4_xs --tensor-type ffn_gate=iq4_xs --tensor-type ffn_up=iq4_xs \
+#          --tensor-type attn_output=iq4_xs qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-IQ4_XS.gguf iq4_xs
+
+    - name: Quantise Model MXFP4
       run: |
         /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
-          --allow-requantize --token-embedding-type iq4_xs \
-          --tensor-type attn_k=iq4_xs --tensor-type attn_q=iq4_xs --tensor-type attn_v=iq4_xs \
-          --tensor-type ffn_down=iq4_xs --tensor-type ffn_gate=iq4_xs --tensor-type ffn_up=iq4_xs \
-          --tensor-type attn_output=iq4_xs qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-IQ4_XS.gguf iq4_xs
+          --allow-requantize --token-embedding-type mxfp4 \
+          --tensor-type attn_k=mxfp4 --tensor-type attn_q=mxfp4 --tensor-type attn_v=mxfp4 \
+          --tensor-type ffn_down=mxfp4 --tensor-type ffn_gate=mxfp4 --tensor-type ffn_up=mxfp4 \
+          --tensor-type attn_output=mxfp4 qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-MXFP4.gguf 38          
           
     - name: Checkout
       uses: actions/checkout@v4
@@ -85,7 +93,7 @@ jobs:
         TAG=main-${{ github.run_number }}-$RANDOM
         git tag $TAG
         git push origin $TAG
-        gh release create "$TAG" /tmp/qwen3-4B-IQ4_XS.gguf \
+        gh release create "$TAG" /tmp/qwen3-4B-MXFP4.gguf \
           --title "Release $TAG"
 #           /tmp/qwen3-4B-IQ4_NL.gguf \
       env:
