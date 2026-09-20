@@ -103,20 +103,21 @@ jobs:
         rm qwen3-4B-Q2_0.gguf
         #mv qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-Q2_0.gguf
 
-    - name: Quantise Model IQ4_KS_R4
-      run: |
-        /tmp/llama-latest/llama-quantize \
-          --allow-requantize --token-embedding-type iq4_ks \
-          --ffn-down-type iq4_ks_r4 --attn-v-type iq4_ks_r4 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R4.gguf iq4_ks_r4
-        cd /tmp/
-        split -n 2 qwen3-4B-IQ4_KS_R4.gguf
-
-#    - name: Quantise Model IQ4_KS_R16
+#    - name: Quantise Model IQ4_KS_R4
 #      run: |
 #        /tmp/llama-latest/llama-quantize \
-#          --allow-requantize --token-embedding-type iq4_ks_r16 \
-#          --ffn-down-type iq4_ks_r16 --attn-v-type iq4_ks_r16 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R16.gguf iq4_ks_r16
-          
+#          --allow-requantize --token-embedding-type iq4_ks \
+#          --ffn-down-type iq4_ks_r4 --attn-v-type iq4_ks_r4 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R4.gguf iq4_ks_r4
+
+
+    - name: Quantise Model IQ4_KS_R16
+      run: |
+        /tmp/llama-latest/llama-quantize \
+          --allow-requantize --token-embedding-type iq4_ks_r16 \
+          --ffn-down-type iq4_ks_r16 --attn-v-type iq4_ks_r16 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R16.gguf iq4_ks_r16
+        cd /tmp/
+        split -n 2 qwen3-4B-IQ4_KS_R16.gguf
+        
     - name: Checkout
       uses: actions/checkout@v4
 
