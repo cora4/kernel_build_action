@@ -98,7 +98,7 @@ jobs:
           --ffn-down-type iq4_ks_r16 --attn-v-type iq4_ks_r16 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R16.gguf iq4_ks_r16
           
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Create Release
       run: |
