@@ -105,6 +105,8 @@ jobs:
           
     - name: Checkout
       uses: actions/checkout@v6
+      with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
 
     - name: Create Release
       run: |
