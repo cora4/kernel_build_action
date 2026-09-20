@@ -95,6 +95,7 @@ jobs:
           --tensor-type ffn_down=q4_0 --tensor-type ffn_gate=q4_0 --tensor-type ffn_up=q4_0 \
           --tensor-type attn_output=q4_0 qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-Q4_0.gguf q4_0
         #rm qwen3-4B-Q2_0.gguf
+        mv qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-Q2_0.gguf
 
 #    - name: Quantise Model IQ4_KS_R4
 #      run: |
@@ -113,7 +114,7 @@ jobs:
 
     - name: Create Release
       run: |
-        mv qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-Q2_0.gguf
+        echo $PWD
         TAG=main-${{ github.run_number }}-$RANDOM
         git tag $TAG
         git push origin $TAG
