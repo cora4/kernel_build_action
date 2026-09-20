@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: write
+  workflows: write
 
 jobs:
   build-and-release:
@@ -119,7 +120,7 @@ jobs:
         split -n 2 qwen3-4B-IQ4_KS_R16.gguf
         
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Create Release
       run: |
