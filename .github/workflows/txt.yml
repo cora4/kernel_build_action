@@ -15,37 +15,32 @@ jobs:
       run: |
         if ! grep -q "avx512_vnni" /proc/cpuinfo; then
             echo "Architecture: AVX2 (haswell/zen3)"
-            # exit 1
-            wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/llama-latest-bin-ubuntu-x64-avx2.zip
+            exit 1
         elif grep -q "Intel" /proc/cpuinfo; then
             if grep -q "avx512_bf16" /proc/cpuinfo; then
-                # exit 1
                 if lscpu|grep L1i|grep -q "128 KiB"; then
                   echo "Architecture: Granite Rapids"
                 else
                   echo "Architecture: Emerald Rapids"
                 fi
-                wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/llama-latest-bin-ubuntu-x64-sr.zip
             else
                 echo "Architecture: Ice Lake"
-                # exit 1
-                wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/llama-latest-bin-ubuntu-x64-icl.zip
             fi
         else
             echo "Architecture: Zen 4"
-            # exit 1
-            wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/llama-latest-bin-ubuntu-x64-zen4.zip
         fi
         
     - name: Download Dependencies
       id: dl
       run: |
+        wget -q https://github.com/cora4/ik_llama.cpp/releases/download/tgl-83-32393/llama-latest-bin-ubuntu-tgl.zip
         # wget -q https://github.com/cora4/ik_llama.cpp/releases/download/a/qwen3-1.7B-Q2_0.gguf
         wget -q https://github.com/cora4/kernel_build_action/releases/download/main-13-7977/qwen3-4B-Q2_0.gguf
         wget -q https://github.com/PrismML-Eng/llama.cpp/releases/download/prism-b9596-9fcaed7/llama-prism-b9596-9fcaed7-bin-ubuntu-x64.tar.gz
 
     - name: Extract Binaries
       run: |
+        unzip -o llama-latest-bin-ubuntu-tgl.zip -d /tmp/
         tar --no-overwrite-dir -xf llama-prism-b9596-9fcaed7-bin-ubuntu-x64.tar.gz -C /tmp/ || true
 
     - name: System Information
@@ -60,7 +55,9 @@ jobs:
       run: |
         echo "Testing Llama Prism:"
         /tmp/llama-prism-b9596-9fcaed7/llama-server --version
-
+        echo "Testing ik_llama.cpp:"
+        /tmp/llama-latest/llama-server --version
+        
 #    - name: Quantise Model IQ4_NL
 #      run: |
 #        /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
@@ -77,13 +74,28 @@ jobs:
 #          --tensor-type ffn_down=iq4_xs --tensor-type ffn_gate=iq4_xs --tensor-type ffn_up=iq4_xs \
 #          --tensor-type attn_output=iq4_xs qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-IQ4_XS.gguf iq4_xs
 
-    - name: Quantise Model MXFP4
-      run: |
+    #- name: Quantise Model MXFP4
+    #  run: |
+    #    /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
+    #      --allow-requantize --token-embedding-type mxfp4 \
+    #      --tensor-type attn_k=mxfp4 --tensor-type attn_q=mxfp4 --tensor-type attn_v=mxfp4 \
+    #      --tensor-type ffn_down=mxfp4 --tensor-type ffn_gate=mxfp4 --tensor-type ffn_up=mxfp4 \
+    #      --tensor-type attn_output=mxfp4 qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-MXFP4.gguf 38|
+
+    - name: Quantise Model Q4_0
+      run: |          
         /tmp/llama-prism-b9596-9fcaed7/llama-quantize \
-          --allow-requantize --token-embedding-type mxfp4 \
-          --tensor-type attn_k=mxfp4 --tensor-type attn_q=mxfp4 --tensor-type attn_v=mxfp4 \
-          --tensor-type ffn_down=mxfp4 --tensor-type ffn_gate=mxfp4 --tensor-type ffn_up=mxfp4 \
-          --tensor-type attn_output=mxfp4 qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-MXFP4.gguf 38          
+          --allow-requantize --token-embedding-type Q4_0 \
+          --tensor-type attn_k=q4_0 --tensor-type attn_q=q4_0 --tensor-type attn_v=q4_0 \
+          --tensor-type ffn_down=q4_0 --tensor-type ffn_gate=q4_0 --tensor-type ffn_up=q4_0 \
+          --tensor-type attn_output=q4_0 qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-Q4_0.gguf q4_0
+        rm qwen3-4B-Q2_0.gguf
+
+    - name: Quantise Model IQ4_KS_R4
+      run: |
+        /tmp/llama-latest/llama-quantize \
+          --allow-requantize --token-embedding-type iq4_ks \
+          --ffn-down-type iq4_ks_r4 --attn-v-type iq4_ks_r4 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R4.gguf iq4_ks_r4
           
     - name: Checkout
       uses: actions/checkout@v4
@@ -93,7 +105,7 @@ jobs:
         TAG=main-${{ github.run_number }}-$RANDOM
         git tag $TAG
         git push origin $TAG
-        gh release create "$TAG" /tmp/qwen3-4B-MXFP4.gguf \
+        gh release create "$TAG" /tmp/qwen3-4B-IQ4_KS_R4.gguf \
           --title "Release $TAG"
 #           /tmp/qwen3-4B-IQ4_NL.gguf \
       env:
