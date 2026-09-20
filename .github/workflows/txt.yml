@@ -108,6 +108,8 @@ jobs:
         /tmp/llama-latest/llama-quantize \
           --allow-requantize --token-embedding-type iq4_ks \
           --ffn-down-type iq4_ks_r4 --attn-v-type iq4_ks_r4 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R4.gguf iq4_ks_r4
+        cd /tmp/
+        split -n 2 qwen3-4B-IQ4_KS_R4.gguf
 
 #    - name: Quantise Model IQ4_KS_R16
 #      run: |
@@ -124,7 +126,7 @@ jobs:
         TAG=main-${{ github.run_number }}-$RANDOM
         git tag $TAG
         git push origin $TAG
-        gh release create "$TAG" /tmp/qwen3-4B-IQ4_KS_R4.gguf \
+        gh release create "$TAG" /tmp/xaa /tmp/xab \
           --title "Release $TAG"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
