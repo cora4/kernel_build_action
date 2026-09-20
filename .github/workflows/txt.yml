@@ -91,11 +91,11 @@ jobs:
           --tensor-type attn_output=q4_0 qwen3-4B-Q2_0.gguf /tmp/qwen3-4B-Q4_0.gguf q4_0
         rm qwen3-4B-Q2_0.gguf
 
-    - name: Quantise Model IQ4_KS_R4
-      run: |
-        /tmp/llama-latest/llama-quantize \
-          --allow-requantize --token-embedding-type iq4_ks \
-          --ffn-down-type iq4_ks_r4 --attn-v-type iq4_ks_r4 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R4.gguf iq4_ks_r4
+#    - name: Quantise Model IQ4_KS_R4
+#      run: |
+#        /tmp/llama-latest/llama-quantize \
+#          --allow-requantize --token-embedding-type iq4_ks \
+#          --ffn-down-type iq4_ks_r4 --attn-v-type iq4_ks_r4 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R4.gguf iq4_ks_r4
 
 #    - name: Quantise Model IQ4_KS_R16
 #      run: |
@@ -104,17 +104,14 @@ jobs:
 #          --ffn-down-type iq4_ks_r16 --attn-v-type iq4_ks_r16 /tmp/qwen3-4B-Q4_0.gguf /tmp/qwen3-4B-IQ4_KS_R16.gguf iq4_ks_r16
           
     - name: Checkout
-      uses: actions/checkout@v6
-      with:
-          token: ${{ secrets.WORKFLOW_TOKEN }}
+      uses: actions/checkout@v4
 
     - name: Create Release
       run: |
         TAG=main-${{ github.run_number }}-$RANDOM
         git tag $TAG
         git push origin $TAG
-        gh release create "$TAG" /tmp/qwen3-4B-IQ4_KS_R4.gguf \
+        gh release create "$TAG" /tmp/qwen3-4B-Q4_0.gguf \
           --title "Release $TAG"
-#           /tmp/qwen3-4B-IQ4_NL.gguf \
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
